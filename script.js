@@ -12,7 +12,7 @@ const modulesData = {
     subject: 'matematicas',
     description: 'Aprende números, operaciones, geometría y resolución de problemas de forma divertida.',
     difficulty: 3,
-    youtubeId: 'dQw4w9WgXcQ',
+    youtubeId: 'https://www.youtube.com/watch?v=fKzrsKROxWE',
     lessons: [
       { title: 'Números del 1 al 100', content: 'Aprendemos a contar y reconocer los números del 1 al 100. Los números son la base de las matemáticas y los usamos todos los días.' },
       { title: 'Suma y Resta', content: 'La suma nos permite juntar cantidades y la resta nos ayuda a encontrar la diferencia entre dos números.' },
