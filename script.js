@@ -34,7 +34,7 @@ const modulesData = {
     subject: 'ciencias',
     description: 'Explora el mundo natural: plantas, animales, el cuerpo humano y el universo.',
     difficulty: 2,
-    youtubeId: 'p4fEAIpuqHU&t',
+    youtubeId: 'p4fEAIpuqHU',
     lessons: [
       { title: 'Los seres vivos', content: 'Los seres vivos son todos los que nacen, crecen, se reproducen y mueren. Incluyen plantas, animales, hongos y microorganismos.' },
       { title: 'El cuerpo humano', content: 'Nuestro cuerpo tiene muchos sistemas: el respiratorio, el digestivo, el circulatorio. Cada uno cumple una función importante.' },
@@ -56,7 +56,7 @@ const modulesData = {
     subject: 'espanol',
     description: 'Mejora tu lectura, escritura, gramática y expresión oral en español.',
     difficulty: 2,
-    youtubeId: '9bZkp7q19f0',
+    youtubeId: 'me5_nji00JA',
     lessons: [
       { title: 'Las vocales y consonantes', content: 'El alfabeto español tiene 27 letras. Las vocales son: a, e, i, o, u. Las demás son consonantes.' },
       { title: 'Sílabas y palabras', content: 'Las palabras se dividen en sílabas. Según el número de sílabas, las palabras se llaman monosílabas, bisílabas, trisílabas o polisílabas.' },
@@ -78,7 +78,7 @@ const modulesData = {
     subject: 'historia',
     description: 'Viaja en el tiempo y descubre las civilizaciones, culturas e historia de México y el mundo.',
     difficulty: 3,
-    youtubeId: 'kJQP7kiw5Fk',
+    youtubeId: 'bVxTPQ9lhFw',
     lessons: [
       { title: 'Las civilizaciones antiguas', content: 'Las primeras civilizaciones surgieron hace miles de años cerca de los ríos: Mesopotamia, Egipto, India y China.' },
       { title: 'Los mayas y aztecas', content: 'Los mayas desarrollaron un sistema de escritura, calendario y astronomía. Los aztecas fundaron Tenochtitlán, la actual Ciudad de México.' },
@@ -100,7 +100,7 @@ const modulesData = {
     subject: 'educacion-fisica',
     description: 'Descubre la importancia del deporte, la salud, el trabajo en equipo y el bienestar físico.',
     difficulty: 1,
-    youtubeId: 'RgKAFK5djSk',
+    youtubeId: 'jsqONxiLcYM',
     lessons: [
       { title: 'Calentamiento y estiramiento', content: 'Antes de cualquier actividad física es importante calentar los músculos para evitar lesiones. El estiramiento mejora la flexibilidad.' },
       { title: 'Deportes en equipo', content: 'El fútbol, baloncesto y voleibol son deportes en equipo. Aprenden valores como la cooperación, respeto y compañerismo.' },
