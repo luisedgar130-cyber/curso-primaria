@@ -34,7 +34,7 @@ const modulesData = {
     subject: 'ciencias',
     description: 'Explora el mundo natural: plantas, animales, el cuerpo humano y el universo.',
     difficulty: 2,
-    youtubeId: 'p4fEAIpuqHU&t=1s',
+    youtubeId: 'p4fEAIpuqHU&t',
     lessons: [
       { title: 'Los seres vivos', content: 'Los seres vivos son todos los que nacen, crecen, se reproducen y mueren. Incluyen plantas, animales, hongos y microorganismos.' },
       { title: 'El cuerpo humano', content: 'Nuestro cuerpo tiene muchos sistemas: el respiratorio, el digestivo, el circulatorio. Cada uno cumple una función importante.' },
