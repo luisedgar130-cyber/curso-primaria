@@ -3,64 +3,353 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curso Primaria</title>
+    <meta name="description" content="Curso de Primaria interactivo con 5 módulos educativos, actividades y sistema de progreso.">
+    <title>🎓 Curso de Primaria</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Bienvenidos al Curso de Primaria</h1>
-        <nav>
-            <ul>
-                <li><a href="#matematicas">Matemáticas</a></li>
-                <li><a href="#ciencias">Ciencias Naturales</a></li>
-                <li><a href="#espanol">Español</a></li>
-                <li><a href="#historia">Historia</a></li>
-                <li><a href="#educacion-fisica">Educación Física</a></li>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎓</span>
+                <span class="logo-text">Curso Primaria</span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#inicio" class="nav-link" onclick="closeMenu()">Inicio</a></li>
+                <li><a href="#modulos" class="nav-link" onclick="closeMenu()">Módulos</a></li>
+                <li><a href="#dashboard" class="nav-link" onclick="closeMenu()">Mi Progreso</a></li>
+                <li><a href="#perfil" class="nav-link" onclick="closeMenu()">Mi Perfil</a></li>
             </ul>
-        </nav>
-    </header>
+            <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menú">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
 
-    <main>
-        <section id="matematicas">
-            <h2>Matemáticas</h2>
-            <p>Contenido de lectura sobre Matemáticas.</p>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/example1" frameborder="0" allowfullscreen></iframe>
-            <button onclick="interactiveActivity('matematicas')">Actividad Interactiva</button>
-            <a href="resources/matematicas.pdf" download>Descargar Recursos</a>
-        </section>
+    <!-- ===== HERO SECTION ===== -->
+    <section id="inicio" class="hero">
+        <div class="hero-bg">
+            <div class="hero-shape shape1"></div>
+            <div class="hero-shape shape2"></div>
+            <div class="hero-shape shape3"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">✨ Aprendizaje Interactivo</div>
+            <h1 class="hero-title">¡Bienvenido al<br><span class="highlight">Curso de Primaria!</span></h1>
+            <p class="hero-subtitle">Aprende Matemáticas, Ciencias, Español, Historia y Educación Física de forma divertida e interactiva. ¡Con videos, actividades y logros!</p>
+            <div class="hero-stats">
+                <div class="hero-stat"><span class="stat-num">5</span><span class="stat-label">Módulos</span></div>
+                <div class="hero-stat"><span class="stat-num">15</span><span class="stat-label">Actividades</span></div>
+                <div class="hero-stat"><span class="stat-num">10</span><span class="stat-label">Logros</span></div>
+            </div>
+            <div class="hero-buttons">
+                <button class="btn btn-primary btn-lg" onclick="scrollToSection('modulos')">🚀 Comenzar Ahora</button>
+                <button class="btn btn-outline btn-lg" onclick="scrollToSection('dashboard')">📊 Ver Mi Progreso</button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="hero-cards">
+                <div class="floating-card card-1">📐 Matemáticas</div>
+                <div class="floating-card card-2">🔬 Ciencias</div>
+                <div class="floating-card card-3">📖 Español</div>
+                <div class="floating-card card-4">🏛️ Historia</div>
+                <div class="floating-card card-5">🏃 Ed. Física</div>
+            </div>
+        </div>
+    </section>
 
-        <section id="ciencias">
-            <h2>Ciencias Naturales</h2>
-            <p>Contenido de lectura sobre Ciencias Naturales.</p>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/example2" frameborder="0" allowfullscreen></iframe>
-            <button onclick="interactiveActivity('ciencias')">Actividad Interactiva</button>
-            <a href="resources/ciencias.pdf" download>Descargar Recursos</a>
-        </section>
+    <!-- ===== DASHBOARD ===== -->
+    <section id="dashboard" class="dashboard-section">
+        <div class="container">
+            <h2 class="section-title">📊 Mi Progreso</h2>
+            <div class="dashboard-grid">
+                <!-- Puntos -->
+                <div class="dashboard-card card-points">
+                    <div class="card-icon">⭐</div>
+                    <div class="card-info">
+                        <span class="card-value" id="totalPoints">0</span>
+                        <span class="card-label">Puntos Totales</span>
+                    </div>
+                </div>
+                <!-- Nivel -->
+                <div class="dashboard-card card-level">
+                    <div class="card-icon">🏅</div>
+                    <div class="card-info">
+                        <span class="card-value" id="currentLevel">Principiante</span>
+                        <span class="card-label">Nivel Actual</span>
+                    </div>
+                </div>
+                <!-- Racha -->
+                <div class="dashboard-card card-streak">
+                    <div class="card-icon">🔥</div>
+                    <div class="card-info">
+                        <span class="card-value" id="streakDays">0</span>
+                        <span class="card-label">Días de Racha</span>
+                    </div>
+                </div>
+                <!-- Logros -->
+                <div class="dashboard-card card-achievements">
+                    <div class="card-icon">🏆</div>
+                    <div class="card-info">
+                        <span class="card-value" id="achievementsCount">0</span>
+                        <span class="card-label">Logros</span>
+                    </div>
+                </div>
+            </div>
 
-        <section id="espanol">
-            <h2>Español</h2>
-            <p>Contenido de lectura sobre Español.</p>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/example3" frameborder="0" allowfullscreen></iframe>
-            <button onclick="interactiveActivity('espanol')">Actividad Interactiva</button>
-            <a href="resources/espanol.pdf" download>Descargar Recursos</a>
-        </section>
+            <!-- Barra de progreso global -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span class="progress-title">🎯 Progreso General del Curso</span>
+                    <span class="progress-percent" id="globalProgressText">0%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="globalProgressBar" style="width:0%"></div>
+                </div>
+            </div>
 
-        <section id="historia">
-            <h2>Historia</h2>
-            <p>Contenido de lectura sobre Historia.</p>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/example4" frameborder="0" allowfullscreen></iframe>
-            <button onclick="interactiveActivity('historia')">Actividad Interactiva</button>
-            <a href="resources/historia.pdf" download>Descargar Recursos</a>
-        </section>
+            <!-- Progreso por módulo -->
+            <div class="module-progress-grid" id="moduleProgressGrid">
+                <!-- Generado por JS -->
+            </div>
+        </div>
+    </section>
 
-        <section id="educacion-fisica">
-            <h2>Educación Física</h2>
-            <p>Contenido de lectura sobre Educación Física.</p>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/example5" frameborder="0" allowfullscreen></iframe>
-            <button onclick="interactiveActivity('educacion-fisica')">Actividad Interactiva</button>
-            <a href="resources/educacion_fisica.pdf" download>Descargar Recursos</a>
-        </section>
-    </main>
+    <!-- ===== MÓDULOS ===== -->
+    <section id="modulos" class="modules-section">
+        <div class="container">
+            <h2 class="section-title">📚 Nuestros Módulos</h2>
+            <p class="section-subtitle">Selecciona un módulo para comenzar a aprender</p>
+            <div class="modules-grid">
+
+                <!-- Matemáticas -->
+                <div class="module-card" data-module="matematicas" onclick="openModule('matematicas')">
+                    <div class="module-card-bg bg-math"></div>
+                    <div class="module-icon">📐</div>
+                    <h3 class="module-title">Matemáticas</h3>
+                    <p class="module-desc">Números, operaciones, fracciones y resolución de problemas.</p>
+                    <div class="module-meta">
+                        <span class="module-lessons">3 Actividades</span>
+                        <span class="module-status" id="status-matematicas">🔓 Disponible</span>
+                    </div>
+                    <div class="module-progress-mini">
+                        <div class="module-progress-fill" id="fill-matematicas" style="width:0%"></div>
+                    </div>
+                    <button class="btn btn-module">Ver Módulo →</button>
+                </div>
+
+                <!-- Ciencias Naturales -->
+                <div class="module-card" data-module="ciencias" onclick="openModule('ciencias')">
+                    <div class="module-card-bg bg-science"></div>
+                    <div class="module-icon">🔬</div>
+                    <h3 class="module-title">Ciencias Naturales</h3>
+                    <p class="module-desc">Plantas, animales, el sistema solar y el ciclo del agua.</p>
+                    <div class="module-meta">
+                        <span class="module-lessons">3 Actividades</span>
+                        <span class="module-status" id="status-ciencias">🔓 Disponible</span>
+                    </div>
+                    <div class="module-progress-mini">
+                        <div class="module-progress-fill" id="fill-ciencias" style="width:0%"></div>
+                    </div>
+                    <button class="btn btn-module">Ver Módulo →</button>
+                </div>
+
+                <!-- Español -->
+                <div class="module-card" data-module="espanol" onclick="openModule('espanol')">
+                    <div class="module-card-bg bg-spanish"></div>
+                    <div class="module-icon">📖</div>
+                    <h3 class="module-title">Español</h3>
+                    <p class="module-desc">Lectura, escritura, gramática y ortografía.</p>
+                    <div class="module-meta">
+                        <span class="module-lessons">3 Actividades</span>
+                        <span class="module-status" id="status-espanol">🔓 Disponible</span>
+                    </div>
+                    <div class="module-progress-mini">
+                        <div class="module-progress-fill" id="fill-espanol" style="width:0%"></div>
+                    </div>
+                    <button class="btn btn-module">Ver Módulo →</button>
+                </div>
+
+                <!-- Historia -->
+                <div class="module-card" data-module="historia" onclick="openModule('historia')">
+                    <div class="module-card-bg bg-history"></div>
+                    <div class="module-icon">🏛️</div>
+                    <h3 class="module-title">Historia</h3>
+                    <p class="module-desc">Civilizaciones antiguas, independencia y cultura.</p>
+                    <div class="module-meta">
+                        <span class="module-lessons">3 Actividades</span>
+                        <span class="module-status" id="status-historia">🔓 Disponible</span>
+                    </div>
+                    <div class="module-progress-mini">
+                        <div class="module-progress-fill" id="fill-historia" style="width:0%"></div>
+                    </div>
+                    <button class="btn btn-module">Ver Módulo →</button>
+                </div>
+
+                <!-- Educación Física -->
+                <div class="module-card" data-module="educacion-fisica" onclick="openModule('educacion-fisica')">
+                    <div class="module-card-bg bg-pe"></div>
+                    <div class="module-icon">🏃</div>
+                    <h3 class="module-title">Educación Física</h3>
+                    <p class="module-desc">Deportes, salud, ejercicio y hábitos de vida activa.</p>
+                    <div class="module-meta">
+                        <span class="module-lessons">3 Actividades</span>
+                        <span class="module-status" id="status-educacion-fisica">🔓 Disponible</span>
+                    </div>
+                    <div class="module-progress-mini">
+                        <div class="module-progress-fill" id="fill-educacion-fisica" style="width:0%"></div>
+                    </div>
+                    <button class="btn btn-module">Ver Módulo →</button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PERFIL ===== -->
+    <section id="perfil" class="profile-section">
+        <div class="container">
+            <h2 class="section-title">👤 Mi Perfil</h2>
+            <div class="profile-grid">
+                <div class="profile-card">
+                    <div class="profile-avatar" id="profileAvatar">🎓</div>
+                    <div class="profile-name" id="profileName">Estudiante</div>
+                    <div class="profile-grade" id="profileGrade">Primaria</div>
+                    <button class="btn btn-outline btn-sm" onclick="editProfile()">✏️ Editar Perfil</button>
+                </div>
+                <div class="profile-stats">
+                    <h3 class="stats-title">📈 Estadísticas</h3>
+                    <div class="stats-list">
+                        <div class="stat-row">
+                            <span class="stat-icon">📚</span>
+                            <span class="stat-text">Módulos Completados</span>
+                            <span class="stat-val" id="modulesCompleted">0 / 5</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-icon">✅</span>
+                            <span class="stat-text">Respuestas Correctas</span>
+                            <span class="stat-val" id="correctAnswers">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-icon">❌</span>
+                            <span class="stat-text">Respuestas Incorrectas</span>
+                            <span class="stat-val" id="wrongAnswers">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-icon">⭐</span>
+                            <span class="stat-text">Puntos Totales</span>
+                            <span class="stat-val" id="profilePoints">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-icon">🔥</span>
+                            <span class="stat-text">Racha de Días</span>
+                            <span class="stat-val" id="profileStreak">0 días</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger btn-sm" onclick="resetProgress()">🗑️ Reiniciar Progreso</button>
+                </div>
+                <!-- Logros -->
+                <div class="achievements-card">
+                    <h3 class="stats-title">🏆 Mis Logros</h3>
+                    <div class="achievements-grid" id="achievementsGrid">
+                        <!-- Generado por JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">🎓 Curso Primaria</div>
+                    <p class="footer-desc">Plataforma educativa interactiva para estudiantes de primaria.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Módulos</h4>
+                    <ul>
+                        <li><a href="#modulos" onclick="openModule('matematicas')">📐 Matemáticas</a></li>
+                        <li><a href="#modulos" onclick="openModule('ciencias')">🔬 Ciencias</a></li>
+                        <li><a href="#modulos" onclick="openModule('espanol')">📖 Español</a></li>
+                        <li><a href="#modulos" onclick="openModule('historia')">🏛️ Historia</a></li>
+                        <li><a href="#modulos" onclick="openModule('educacion-fisica')">🏃 Ed. Física</a></li>
+                    </ul>
+                </div>
+                <div class="footer-info">
+                    <h4>Información</h4>
+                    <ul>
+                        <li>📧 contacto@curso-primaria.com</li>
+                        <li>📅 Actualizado 2025</li>
+                        <li>🌐 GitHub Pages</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Curso de Primaria — Hecho con ❤️ para estudiantes</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== MODAL DE MÓDULO ===== -->
+    <div class="module-overlay" id="moduleOverlay" onclick="closeModuleOnOverlay(event)">
+        <div class="module-modal" id="moduleModal">
+            <button class="modal-close" onclick="closeModule()" aria-label="Cerrar">✕</button>
+            <div class="modal-content" id="modalContent">
+                <!-- Contenido generado por JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL DE RESULTADO ===== -->
+    <div class="result-overlay" id="resultOverlay">
+        <div class="result-modal" id="resultModal">
+            <div class="result-icon" id="resultIcon">🎉</div>
+            <h2 class="result-title" id="resultTitle">¡Correcto!</h2>
+            <p class="result-message" id="resultMessage">¡Ganaste 10 puntos!</p>
+            <button class="btn btn-primary" onclick="closeResult()">Continuar</button>
+        </div>
+    </div>
+
+    <!-- ===== MODAL DE PERFIL ===== -->
+    <div class="result-overlay" id="profileOverlay">
+        <div class="result-modal">
+            <h2 style="margin-bottom:1rem;">✏️ Editar Perfil</h2>
+            <label class="form-label">Tu nombre:</label>
+            <input type="text" class="form-input" id="nameInput" placeholder="Escribe tu nombre...">
+            <label class="form-label">Tu grado:</label>
+            <select class="form-input" id="gradeInput">
+                <option value="1° Primaria">1° Primaria</option>
+                <option value="2° Primaria">2° Primaria</option>
+                <option value="3° Primaria">3° Primaria</option>
+                <option value="4° Primaria">4° Primaria</option>
+                <option value="5° Primaria">5° Primaria</option>
+                <option value="6° Primaria">6° Primaria</option>
+            </select>
+            <label class="form-label">Tu avatar:</label>
+            <div class="avatar-grid" id="avatarGrid">
+                <span class="avatar-opt" onclick="selectAvatar('🎓')">🎓</span>
+                <span class="avatar-opt" onclick="selectAvatar('👦')">👦</span>
+                <span class="avatar-opt" onclick="selectAvatar('👧')">👧</span>
+                <span class="avatar-opt" onclick="selectAvatar('🧑')">🧑</span>
+                <span class="avatar-opt" onclick="selectAvatar('🦸')">🦸</span>
+                <span class="avatar-opt" onclick="selectAvatar('🌟')">🌟</span>
+            </div>
+            <div style="display:flex;gap:0.75rem;margin-top:1.5rem;">
+                <button class="btn btn-primary" onclick="saveProfile()">💾 Guardar</button>
+                <button class="btn btn-outline" onclick="closeProfileModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CONFETI ===== -->
+    <div id="confettiContainer" class="confetti-container" aria-hidden="true"></div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" class="toast" aria-live="polite"></div>
 
     <script src="script.js"></script>
 </body>
