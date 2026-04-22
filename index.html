@@ -178,6 +178,9 @@
             <button class="avatar-btn" data-avatar="🧙" title="Mago">🧙</button>
             <button class="avatar-btn" data-avatar="🤖" title="Robot">🤖</button>
           </div>
+          <div class="student-id-display" id="student-id-display" title="Identificador único de este estudiante">
+            <i class="fas fa-id-badge"></i> ID: <span id="student-id-text">—</span>
+          </div>
         </div>
         <form class="profile-form" id="profile-form" novalidate>
           <div class="form-group">
@@ -210,10 +213,35 @@
           <button type="submit" class="btn btn-primary btn-full">
             <i class="fas fa-save"></i> Guardar Perfil
           </button>
+          <button type="button" class="btn btn-switch-student btn-full" id="btn-switch-student">
+            <i class="fas fa-user-plus"></i> Cambiar estudiante / Nuevo estudiante
+          </button>
         </form>
       </div>
     </div>
   </section>
+
+  <!-- ===== SWITCH STUDENT MODAL ===== -->
+  <div id="switch-student-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="switch-student-title" hidden>
+    <div class="modal-box modal-switch-student">
+      <div class="modal-header">
+        <h3 id="switch-student-title"><i class="fas fa-user-plus"></i> Cambiar estudiante</h3>
+      </div>
+      <div class="switch-student-body">
+        <p>¿Deseas iniciar como un estudiante diferente?</p>
+        <p class="switch-student-warning"><i class="fas fa-exclamation-triangle"></i> El progreso del estudiante actual <strong>no se borrará del servidor</strong>, pero esta pantalla comenzará desde cero con un nuevo ID.</p>
+        <p class="switch-student-hint">Si vuelves a usar el mismo navegador, puedes recuperar tu progreso anterior con el mismo ID.</p>
+      </div>
+      <div class="modal-footer switch-student-footer">
+        <button class="btn btn-secondary" id="switch-student-cancel">
+          <i class="fas fa-times"></i> Cancelar
+        </button>
+        <button class="btn btn-switch-confirm" id="switch-student-confirm">
+          <i class="fas fa-user-plus"></i> Sí, nuevo estudiante
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- ===== ACHIEVEMENTS SECTION ===== -->
   <section id="logros" class="achievements-section">

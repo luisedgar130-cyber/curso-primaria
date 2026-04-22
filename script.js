@@ -250,6 +250,85 @@ async function loadStateFromServer() {
   }
 }
 
+// === MULTI-STUDENT / SWITCH STUDENT ===
+function getPartialStudentId() {
+  const id = localStorage.getItem('cursoPrimaria_studentId') || '';
+  if (!id) return '—';
+  const SHOW = 4; // characters to show at each end
+  if (id.length <= SHOW * 2) return id; // too short to mask, show full
+  return id.substring(0, SHOW) + '…' + id.substring(id.length - SHOW);
+}
+
+function displayStudentId() {
+  const el = document.getElementById('student-id-text');
+  if (el) el.textContent = getPartialStudentId();
+}
+
+function resetStudentState() {
+  // Remove stored identity and progress
+  localStorage.removeItem('cursoPrimaria_studentId');
+  localStorage.removeItem('cursoPrimaria_v2');
+
+  // Reset in-memory state to defaults
+  state.studentName     = '';
+  state.grade           = '';
+  state.favoriteSubject = '';
+  state.avatar          = '🎒';
+  state.points          = 0;
+  state.modulesCompleted = [];
+  state.activitiesDone  = [];
+  state.medalsGanadas   = [];
+  state.quizDone        = 0;
+  state.perfectQuiz     = 0;
+  state.lessonsOpen     = 0;
+  state.modulesVisited  = new Set();
+  state.subjectsQuizzed = new Set();
+  state.progress        = { matematicas: 0, ciencias: 0, espanol: 0, historia: 0, 'educacion-fisica': 0 };
+  state.activityLog     = [];
+  state.currentQuiz     = null;
+  state.currentQuestionIndex = 0;
+  state.quizScore       = 0;
+  state.currentLesson   = null;
+
+  // Also reset achievements unlocked flags
+  achievementsData.forEach(a => { a.unlocked = false; });
+}
+
+function openSwitchStudentModal() {
+  const modal = document.getElementById('switch-student-modal');
+  if (modal) modal.removeAttribute('hidden');
+}
+
+function closeSwitchStudentModal() {
+  const modal = document.getElementById('switch-student-modal');
+  if (modal) modal.setAttribute('hidden', '');
+}
+
+function confirmSwitchStudent() {
+  closeSwitchStudentModal();
+  resetStudentState();
+  // Reload to reinitialize everything (generates a new studentId)
+  location.reload();
+}
+
+function initSwitchStudentModal() {
+  const openBtn   = document.getElementById('btn-switch-student');
+  const cancelBtn = document.getElementById('switch-student-cancel');
+  const confirmBtn = document.getElementById('switch-student-confirm');
+  const overlay   = document.getElementById('switch-student-modal');
+
+  if (openBtn)    openBtn.addEventListener('click', openSwitchStudentModal);
+  if (cancelBtn)  cancelBtn.addEventListener('click', closeSwitchStudentModal);
+  if (confirmBtn) confirmBtn.addEventListener('click', confirmSwitchStudent);
+
+  // Close on overlay click
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeSwitchStudentModal();
+    });
+  }
+}
+
 // === LOADING SCREEN ===
 window.addEventListener('load', () => {
   setTimeout(() => {
@@ -1087,6 +1166,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   initLessonModal();
   initNotificationClose();
   initKeyboardListeners();
+  displayStudentId();
+  initSwitchStudentModal();
 
   // Animate chart bars on scroll into view
   const dashboardSection = document.getElementById('progreso');
