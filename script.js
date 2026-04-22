@@ -158,6 +158,21 @@ const state = {
   currentLesson: null
 };
 
+// === STUDENT IDENTITY ===
+function getStudentId() {
+  const KEY = 'cursoPrimaria_studentId';
+  let id = localStorage.getItem(KEY);
+  if (!id) {
+    // Generate a stable random UUID-like identifier
+    id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0;
+      return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+    });
+    localStorage.setItem(KEY, id);
+  }
+  return id;
+}
+
 // === LOCALSTORAGE ===
 function saveState() {
   const toSave = {
@@ -166,6 +181,7 @@ function saveState() {
     subjectsQuizzed: Array.from(state.subjectsQuizzed)
   };
   localStorage.setItem('cursoPrimaria_v2', JSON.stringify(toSave));
+  saveStateToServerDebounced();
 }
 
 function loadState() {
@@ -180,6 +196,57 @@ function loadState() {
     if (!state.progress)    state.progress = { matematicas: 0, ciencias: 0, espanol: 0, historia: 0, 'educacion-fisica': 0 };
   } catch (e) {
     console.warn('Could not load state:', e);
+  }
+}
+
+// === SERVER SYNC ===
+let _saveDebounceTimer = null;
+
+function saveStateToServerDebounced() {
+  if (_saveDebounceTimer) clearTimeout(_saveDebounceTimer);
+  _saveDebounceTimer = setTimeout(saveStateToServer, 2000);
+}
+
+async function saveStateToServer() {
+  try {
+    const studentId = getStudentId();
+    const toSave = {
+      ...state,
+      modulesVisited: Array.from(state.modulesVisited),
+      subjectsQuizzed: Array.from(state.subjectsQuizzed)
+    };
+    await fetch('/api/state', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-user': studentId
+      },
+      body: JSON.stringify({ state: toSave })
+    });
+  } catch (e) {
+    console.warn('Could not save state to server:', e);
+  }
+}
+
+async function loadStateFromServer() {
+  try {
+    const studentId = getStudentId();
+    const res = await fetch('/api/state', {
+      headers: { 'x-user': studentId }
+    });
+    if (!res.ok) return false;
+    const data = await res.json();
+    if (!data?.state) return false;
+
+    Object.assign(state, data.state);
+    state.modulesVisited  = new Set(data.state.modulesVisited  || []);
+    state.subjectsQuizzed = new Set(data.state.subjectsQuizzed || []);
+    if (!state.activityLog) state.activityLog = [];
+    if (!state.progress)    state.progress = { matematicas: 0, ciencias: 0, espanol: 0, historia: 0, 'educacion-fisica': 0 };
+    return true;
+  } catch (e) {
+    console.warn('Could not load state from server:', e);
+    return false;
   }
 }
 
@@ -981,8 +1048,30 @@ function initKeyboardListeners() {
 }
 
 // === INITIALIZATION ===
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   loadState();
+
+  // Try to load latest state from server (falls back to localStorage silently)
+  const serverLoaded = await loadStateFromServer();
+  if (serverLoaded) {
+    // Re-save local copy with the fresher server data
+    const toSave = {
+      ...state,
+      modulesVisited: Array.from(state.modulesVisited),
+      subjectsQuizzed: Array.from(state.subjectsQuizzed)
+    };
+    localStorage.setItem('cursoPrimaria_v2', JSON.stringify(toSave));
+  }
+
+  // Flush any pending debounced save when the user navigates away
+  window.addEventListener('beforeunload', () => {
+    if (_saveDebounceTimer) {
+      clearTimeout(_saveDebounceTimer);
+      _saveDebounceTimer = null;
+      saveStateToServer();
+    }
+  });
+
   initNavbar();
   initHeroAnimations();
   renderModules();

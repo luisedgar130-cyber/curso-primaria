@@ -28,7 +28,7 @@ Una plataforma educativa moderna, dinámica e interactiva diseñada para estudia
 - 📅 **Calendario escolar** con navegación mensual
 - 👤 **Perfil personalizable** con avatares y datos del estudiante
 - 📬 **Formulario de contacto** con validación
-- 💾 **Persistencia de datos** con localStorage
+- 💾 **Persistencia de datos** con localStorage + sincronización en Neon Postgres
 - 📱 **Totalmente responsive**: móvil, tablet y escritorio
 
 ---
@@ -52,6 +52,8 @@ Cada módulo incluye:
 ---
 
 ## 🚀 Cómo Ejecutar Localmente
+
+### Sin backend (solo localStorage)
 
 No se requieren herramientas de construcción, npm, ni servidores especiales.
 
@@ -77,16 +79,138 @@ O también puedes usar cualquier extensión de servidor local como:
 - **VS Code Live Server** (extensión de Visual Studio Code)
 - `python3 -m http.server 8080` y abrir `http://localhost:8080`
 
+### Con backend Neon Postgres (Vercel Functions)
+
+Para probar la integración con la base de datos localmente, necesitas la [Vercel CLI](https://vercel.com/docs/cli):
+
+```bash
+# 1. Instala dependencias
+npm install
+
+# 2. Instala la CLI de Vercel (si no la tienes)
+npm install -g vercel
+
+# 3. Crea un archivo .env.local con tu DATABASE_URL de Neon
+echo "DATABASE_URL=postgresql://usuario:password@host/db?sslmode=require" > .env.local
+
+# 4. Ejecuta el servidor de desarrollo (sirve el static + las funciones de api/)
+vercel dev
+```
+
+Luego abre `http://localhost:3000` en tu navegador.
+
+> **Nota:** Si no hay `DATABASE_URL` configurada o el endpoint falla, la aplicación
+> sigue funcionando normalmente con `localStorage`. La sincronización con el servidor
+> es opcional y transparente para el usuario.
+
+---
+
+## 🗄️ Configuración de Neon Postgres
+
+### 1. Crear el proyecto en Neon
+
+1. Entra a [neon.tech](https://neon.tech) y crea una cuenta (o inicia sesión).
+2. Haz clic en **New Project**.
+3. Elige un nombre (p. ej. `curso-primaria`) y una región cercana.
+4. Copia el **Connection String** (formato `postgresql://...`). Lo necesitarás como `DATABASE_URL`.
+
+### 2. Crear las tablas (SQL)
+
+Abre el **SQL Editor** de Neon y ejecuta:
+
+```sql
+-- Habilitar extensión para UUIDs
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+-- Tabla de estudiantes (un registro por ID único de dispositivo)
+CREATE TABLE IF NOT EXISTS students (
+  id         UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+  username   TEXT        UNIQUE NOT NULL,   -- studentId generado en localStorage
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- Estado del estudiante guardado como JSONB
+CREATE TABLE IF NOT EXISTS student_state (
+  student_id UUID        PRIMARY KEY REFERENCES students(id) ON DELETE CASCADE,
+  state      JSONB       NOT NULL,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+```
+
+### 3. Configurar `DATABASE_URL` en Vercel
+
+1. Abre tu proyecto en [vercel.com](https://vercel.com).
+2. Ve a **Settings → Environment Variables**.
+3. Agrega una nueva variable:
+   - **Key:** `DATABASE_URL`
+   - **Value:** el Connection String de Neon (p. ej. `postgresql://user:pass@host/db?sslmode=require`)
+   - Marca los entornos **Production** y **Preview**.
+4. Haz un nuevo deploy (o fuerza un redeploy) para que la variable surta efecto.
+
+---
+
+## 🔌 API Endpoints
+
+La aplicación expone un único endpoint serverless:
+
+### `GET /api/state`
+
+Devuelve el último estado guardado para el estudiante identificado por el header `x-user`.
+
+**Headers requeridos:**
+- `x-user`: el `studentId` único almacenado en `localStorage` (clave `cursoPrimaria_studentId`).
+
+**Respuesta exitosa:**
+```json
+{ "state": { ... }, "updated_at": "2024-01-01T00:00:00.000Z" }
+```
+
+Si no hay estado guardado aún:
+```json
+{ "state": null }
+```
+
+---
+
+### `POST /api/state`
+
+Guarda (upsert) el estado del estudiante en la base de datos.
+
+**Headers requeridos:**
+- `Content-Type: application/json`
+- `x-user`: el `studentId`.
+
+**Body:**
+```json
+{
+  "state": {
+    "studentName": "Luis",
+    "points": 150,
+    "modulesVisited": ["matematicas", "ciencias"],
+    "subjectsQuizzed": ["matematicas"],
+    ...
+  }
+}
+```
+
+**Respuesta exitosa:**
+```json
+{ "ok": true }
+```
+
 ---
 
 ## 📁 Estructura del Proyecto
 
 ```
 curso-primaria/
-├── index.html      # Estructura HTML completa de la aplicación
-├── styles.css      # Estilos CSS (~700 líneas) con variables, animaciones y responsive
-├── script.js       # Lógica JavaScript (~500 líneas) con módulos, quizzes y estado
-└── README.md       # Este archivo
+├── api/
+│   └── state.js        # Vercel Serverless Function (GET/POST del estado)
+├── index.html          # Estructura HTML completa de la aplicación
+├── styles.css          # Estilos CSS con variables, animaciones y responsive
+├── script.js           # Lógica JavaScript con módulos, quizzes y estado
+├── package.json        # Dependencias Node (para Vercel Functions)
+└── README.md           # Este archivo
 ```
 
 ---
@@ -98,11 +222,13 @@ curso-primaria/
 | **HTML5** | Estructura semántica y accesible |
 | **CSS3** | Variables CSS, Grid, Flexbox, animaciones, glassmorphism |
 | **JavaScript ES6+** | Lógica, localStorage, DOM, IntersectionObserver |
+| **@neondatabase/serverless** | Driver Postgres para Vercel Serverless Functions |
+| **Neon Postgres** | Base de datos serverless para persistencia del estado |
 | **Google Fonts (Nunito)** | Tipografía amigable para niños |
 | **Font Awesome 6** | Íconos vectoriales |
 | **YouTube Embed API** | Videos educativos |
 
-No se usa ningún framework (sin Bootstrap, sin jQuery, sin React). 100% vanilla.
+No se usa ningún framework de frontend (sin Bootstrap, sin jQuery, sin React). 100% vanilla.
 
 ---
 
