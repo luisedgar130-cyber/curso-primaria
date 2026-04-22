@@ -1845,3 +1845,111 @@ input, select, textarea, button {
     flex-direction: column;
   }
 }
+
+/* ============================================================
+   SWITCH STUDENT / STUDENT ID
+   ============================================================ */
+
+/* Student ID badge shown under the avatar */
+.student-id-display {
+  margin-top: 12px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  background: var(--light);
+  border-radius: var(--border-radius-sm);
+  padding: 5px 10px;
+  display: inline-block;
+  letter-spacing: 0.03em;
+  user-select: all;
+}
+
+.student-id-display i {
+  margin-right: 4px;
+  color: var(--primary-blue);
+}
+
+/* "Cambiar estudiante" button – styled as a soft danger/warning action */
+.btn-switch-student {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 20px;
+  margin-top: 10px;
+  background: transparent;
+  color: var(--primary-red);
+  border: 2px solid var(--primary-red);
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-switch-student:hover,
+.btn-switch-student:focus-visible {
+  background: var(--primary-red);
+  color: var(--white);
+  outline: none;
+}
+
+/* Switch-student confirmation modal */
+.modal-switch-student {
+  max-width: 440px;
+}
+
+.switch-student-body {
+  padding: 20px 24px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.97rem;
+  line-height: 1.6;
+}
+
+.switch-student-warning {
+  background: #fff3cd;
+  border-left: 4px solid #f39c12;
+  border-radius: var(--border-radius-sm);
+  padding: 8px 12px;
+  color: #856404;
+  font-size: 0.88rem;
+}
+
+.switch-student-warning i {
+  margin-right: 6px;
+}
+
+.switch-student-hint {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+}
+
+.switch-student-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.btn-switch-confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--primary-red);
+  color: var(--white);
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-switch-confirm:hover,
+.btn-switch-confirm:focus-visible {
+  background: #c0392b;
+  outline: none;
+}
